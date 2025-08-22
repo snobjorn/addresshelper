@@ -51,12 +51,16 @@ Implement addresscheck UI where users can validate their address(es).
 ## todo
 [x] install vite + tailwindcss + shadcn/ui
 [] build ui
+[x] store secret in env (.env.template in 1Password for local dev)
 [] Implement addresscheck UI where users can validate their address(es).
 [] users should be able to fill in one or more addresses and validate these towards the API.
-[] store secret in env (.env.template in 1Password for local dev)
-[] github repo and workflow (branches)
-[] bruno/postman
+[] github repo and workflow (branches: main, stage, features)
+[x] test in bruno/postman
 [] 
+
+## notes
+- use NO for simplicity in this demo
+- 
 
 
 ## future todos
