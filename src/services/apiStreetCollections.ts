@@ -1,7 +1,7 @@
 export async function getStreetCollections(street: string) {
   const url = `${
     import.meta.env.VITE_DI_API_URL
-  }/streetSearch/${encodeURIComponent(street)}?apikey=${
+  }streetSearch/${encodeURIComponent(street)}?apiKey=${
     import.meta.env.VITE_DI_API_KEY
   }`;
 
@@ -24,5 +24,3 @@ export async function getStreetCollections(street: string) {
     console.error("Error fetching street collections:", error);
   }
 }
-
-export default getStreetCollections;
