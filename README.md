@@ -49,39 +49,42 @@ Implement addresscheck UI where users can validate their address(es).
 
 
 ## todo
--   [x] install vite + tailwindcss + shadcn/ui
--   [x] build ui - use ai (cursor) to style with tailwind
--   [x] store secret in env (.env.template in 1Password for local dev)
--   [x] Implement addresscheck UI where users can validate their address(es).
--   [x] users should be able to fill in one or more addresses and validate these towards the API.
--   [x] github repo and workflow (branches: main, stage, feature branches)
--   [x] test api in bruno/postman
--   [x] save validated addresses / clear log
+- [x] install vite + tailwindcss + shadcn/ui
+- [x] build ui - use ai (cursor) to style with tailwind
+- [x] store secret in env (.env.template in 1Password for local dev)
+- [x] Implement addresscheck UI where users can validate their address(es). search + street number
+- [x] auto fill cities field
+- [x] users should be able to fill in one or more addresses and validate these towards the API.
+- [x] github repo and workflow (branches: main, stage, feature branches)
+- [x] test api in bruno/postman
+- [x] save validated addresses / clear log
+- [x] refactor code to clean up file structure
+- [x] use context api for state management, many states in this project
 
 
 ## notes
-- use NO for simplicity in this demo in the api url
-- in github i have created a few issues -- and closed them, to reflect that work for a real project should be documented and working with in branches. but for this project i will only create a few issues, then continue the rest of the work in a dev branch
+- use `NO` for country code for simplicity in this demo in the api url
+- in github i have created a few issues -- and closed them, to reflect that work for a real project should be documented and working with in branches. features would get issue numbers. but for this project i will only create a few issues, then continue the rest of the work in a local dev branch merged into stage, the PR'd into main on github
 
 
 ## future todos
--   [ ] improve or change components to wcag compliant ones
--   [ ] fix uppercase letters etc
--   [ ] loading states
--   [ ] create reusable components for fields in the form -- DRY
--   [ ] use context api for state management, many states in this project
--   [ ] set street number fetch to 100. max limit is 300. make scalable solution for streets with even more numbers
--   [ ] as of now I have simply hidden duplicate `streetNo`s -- find a better solution for items where `duplicateNumberAndEntrance` is `true`. so no floors and households will be missing from search/select 
--   [ ] include zip number in result to better user experience
+- [ ] improve or change components to wcag compliant ones (shadcnui solves much of this already)
+- [ ] fix uppercase letters etc in addresses
+- [ ] show loading states with spinners
+- [ ] create reusable components for fields in the form -- DRY
+- [ ] make scalable solution for street number with more numbers than 100
+- [ ] as of now I have simply hidden duplicate `streetNo` items -- find a better solution for items where `duplicateNumberAndEntrance` is `true`. so no floors and households will be missing from search/select 
+- [ ] include zip number in result to better user experience
 
 
 ## time spent
-- approx. 30 minutes for planning before starting coding
-- approx. 5 hours for the rest
-
+- approx. 30 minutes for initial planning before starting coding
+- approx. 6 hours for the rest
+- 
 
 ## requirements
--  node v.20.12 for vite
+- node v.20.12 for vite
+
 
 ## installation
 - `pnpm i`
