@@ -55,7 +55,8 @@ Implement addresscheck UI where users can validate their address(es).
 -   [x] Implement addresscheck UI where users can validate their address(es).
 -   [x] users should be able to fill in one or more addresses and validate these towards the API.
 -   [x] github repo and workflow (branches: main, stage, feature branches)
--   [x] test in bruno/postman
+-   [x] test api in bruno/postman
+-   [x] save validated addresses / clear log
 
 ## notes
 - use NO for simplicity in this demo in the api url

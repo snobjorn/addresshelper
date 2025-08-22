@@ -21,7 +21,7 @@ export async function getStreetNumbersForCollection(
     }
 
     const data = await response.json();
-    console.log(data);
+    // console.log(data); // Uncomment to see the data in the console
 
     return data;
   } catch (error) {
