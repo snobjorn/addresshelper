@@ -49,14 +49,14 @@ Implement addresscheck UI where users can validate their address(es).
 
 
 ## todo
--   [x] install vite + tailwindcss + shadcn/ui
--   [x] build ui - use ai (cursor) to style with tailwind
--   [x] store secret in env (.env.template in 1Password for local dev)
--   [x] Implement addresscheck UI where users can validate their address(es).
--   [x] users should be able to fill in one or more addresses and validate these towards the API.
--   [x] github repo and workflow (branches: main, stage, feature branches)
--   [x] test api in bruno/postman
--   [x] save validated addresses / clear log
+- [x] install vite + tailwindcss + shadcn/ui
+- [x] build ui - use ai (cursor) to style with tailwind
+- [x] store secret in env (.env.template in 1Password for local dev)
+- [x] Implement addresscheck UI where users can validate their address(es).
+- [x] users should be able to fill in one or more addresses and validate these towards the API.
+- [x] github repo and workflow (branches: main, stage, feature branches)
+- [x] test api in bruno/postman
+- [x] save validated addresses / clear log
 
 
 ## notes
@@ -65,14 +65,14 @@ Implement addresscheck UI where users can validate their address(es).
 
 
 ## future todos
--   [ ] improve or change components to wcag compliant ones
--   [ ] fix uppercase letters etc
--   [ ] loading states
--   [ ] create reusable components for fields in the form -- DRY
--   [ ] use context api for state management, many states in this project
--   [ ] set street number fetch to 100. max limit is 300. make scalable solution for streets with even more numbers
--   [ ] as of now I have simply hidden duplicate `streetNo`s -- find a better solution for items where `duplicateNumberAndEntrance` is `true`. so no floors and households will be missing from search/select 
--   [ ] include zip number in result to better user experience
+- [ ] improve or change components to wcag compliant ones
+- [ ] fix uppercase letters etc
+- [ ] loading states
+- [ ] create reusable components for fields in the form -- DRY
+- [ ] use context api for state management, many states in this project
+- [ ] set street number fetch to 100. max limit is 300. make scalable solution for streets with even more numbers
+- [ ] as of now I have simply hidden duplicate `streetNo`s -- find a better solution for items where `duplicateNumberAndEntrance` is `true`. so no floors and households will be missing from search/select 
+- [ ] include zip number in result to better user experience
 
 
 ## time spent
