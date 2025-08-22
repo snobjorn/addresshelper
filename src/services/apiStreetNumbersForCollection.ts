@@ -1,3 +1,4 @@
+
 export async function getStreetNumbersForCollection(
   streetId: number,
   limit: number
@@ -7,6 +8,7 @@ export async function getStreetNumbersForCollection(
   }streetNumberSearch/${streetId}?apiKey=${
     import.meta.env.VITE_DI_API_KEY
   }&limit=${limit}`;
+
 
   try {
     const response = await fetch(url, {
@@ -21,7 +23,9 @@ export async function getStreetNumbersForCollection(
     }
 
     const data = await response.json();
+
     // console.log(data); // Uncomment to see the data in the console
+
 
     return data;
   } catch (error) {

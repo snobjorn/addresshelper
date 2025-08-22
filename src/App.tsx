@@ -1,7 +1,10 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
 import Address from "@/features/check/Address";
 import { AddressProvider } from "./contexts/AddressContext";
+
+
 
 function App() {
   return (

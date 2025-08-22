@@ -18,7 +18,9 @@ export async function getStreetCollections(street: string) {
     }
 
     const data = await response.json();
+
     // console.log(data); // Uncomment to see the data in the console
+
 
     return data;
   } catch (error) {
