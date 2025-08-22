@@ -111,10 +111,23 @@
 }
 
 @layer base {
+  #root {
+    @apply flex flex-col min-h-screen;
+  }
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  header,
+  footer {
+    @apply flex-0;
+  }
+  main {
+    @apply flex-1;
   }
 }
