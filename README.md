@@ -44,18 +44,18 @@ Implement addresscheck UI where users can validate their address(es).
 - pnpm: fast
 - ci/cd: 
 - translation/localization: 
-- tracking/analytics:
+- tracking/analytics: not implemented in my solution. for simple public app -> event tagging with tracking script. for larger solutions behind login -> some back-end integration perhaps.
 - testing: 
 
 
 ## todo
-[] install vite + tailwindcss
-[] users should be able to fill in one or more addresses and validate these towards the API.
+[x] install vite + tailwindcss + shadcn/ui
+[] build ui
 [] Implement addresscheck UI where users can validate their address(es).
+[] users should be able to fill in one or more addresses and validate these towards the API.
 [] store secret in env (.env.template in 1Password for local dev)
 [] github repo and workflow (branches)
-[] postman
-[] build ui
+[] bruno/postman
 [] 
 
 
@@ -72,4 +72,5 @@ Implement addresscheck UI where users can validate their address(es).
 
 ## installation
 - `pnpm i`
+- add reference to secrets in `env.template` and run `pnpm run env` or create `.env.local` with variables `DI_APIKEY` and `DI_REFERER` 
 - `pnpm run dev`, then visit http://localhost:5173
