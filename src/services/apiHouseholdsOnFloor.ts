@@ -1,4 +1,4 @@
-function getHouseholdsOnFloor(floor: number) {
+function getHouseholdsOnFloor() {
   return fetch(`${import.meta.env.VITE_DI_API_URL}`);
 }
 
