@@ -18,6 +18,7 @@ import { ChevronsUpDownIcon } from "lucide-react";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { getStreetCollections } from "@/services/apiStreetCollections";
+import { getStreetNumbersForCollection } from "@/services/apiStreetNumbersForCollection";
 
 // Type for street results from API
 interface StreetResult {
@@ -28,60 +29,27 @@ interface StreetResult {
   isAliasMatch: string;
 }
 
+interface StreetNumberResult {
+  streetNo: string;
+  entrance: string;
+  addressId: string;
+  [key: string]: unknown;
+}
+
 interface ApiResponse {
   streets: StreetResult[];
 }
 
-const streets = [
-  {
-    value: "demo-street",
-    label: "Demo Street",
-  },
-  {
-    value: "demo-street-2",
-    label: "Demo Street 2",
-  },
-  {
-    value: "demo-street-3",
-    label: "Demo Street 3",
-  },
-  {
-    value: "demo-street-4",
-    label: "Demo Street 4",
-  },
-  {
-    value: "demo-street-5",
-    label: "Demo Street 5",
-  },
-];
-
-const streetNumbers = [
-  {
-    value: "1",
-    label: "1",
-  },
-  {
-    value: "2",
-    label: "2",
-  },
-  {
-    value: "3",
-    label: "3",
-  },
-  {
-    value: "4",
-    label: "4",
-  },
-  {
-    value: "5",
-    label: "5",
-  },
-];
+interface StreetNumbersApiResponse {
+  streetNumbers: StreetNumberResult[];
+}
 
 function Address() {
   // States for street search
   const [streetOpen, setStreetOpen] = React.useState(false);
-  const [streetValue, setStreetValue] = React.useState("");
+  const [streetValue, setStreetValue] = React.useState<StreetResult | null>(
+    null
+  );
   const [streetSearchValue, setStreetSearchValue] = React.useState("");
   const [streetResults, setStreetResults] = React.useState<StreetResult[]>([]);
   const [isLoadingStreets, setIsLoadingStreets] = React.useState(false);
@@ -89,6 +57,11 @@ function Address() {
   // States for street number search
   const [streetNumberOpen, setStreetNumberOpen] = React.useState(false);
   const [streetNumberValue, setStreetNumberValue] = React.useState("");
+  const [streetNumberResults, setStreetNumberResults] = React.useState<
+    StreetNumberResult[]
+  >([]);
+  const [isLoadingStreetNumbers, setIsLoadingStreetNumbers] =
+    React.useState(false);
 
   // Search function for streets
   const searchStreets = React.useCallback(async (searchTerm: string) => {
@@ -121,9 +94,28 @@ function Address() {
     return () => clearTimeout(timeoutId);
   }, [streetSearchValue, searchStreets]);
 
+  // Search for street numbers. Limit is 100 (instead of default 30 from API).
+  const searchStreetNumbers = React.useCallback(async (streetId: number) => {
+    if (streetId) {
+      const data = (await getStreetNumbersForCollection(
+        streetId,
+        100
+      )) as StreetNumbersApiResponse;
+      if (data && data.streetNumbers && Array.isArray(data.streetNumbers)) {
+        setStreetNumberResults(data.streetNumbers);
+      }
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (streetValue) {
+      searchStreetNumbers(streetValue.streetIds[0]);
+    }
+  }, [streetValue, searchStreetNumbers]);
+
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-row gap-2 container mx-auto">
+      <div className="flex flex-row gap-2 container mx-auto items-center">
         {/* Search for Street in API */}
         <Popover open={streetOpen} onOpenChange={setStreetOpen}>
           <PopoverTrigger asChild>
@@ -131,15 +123,13 @@ function Address() {
               variant="outline"
               role="combobox"
               aria-expanded={streetOpen}
-              className="w-[200px] justify-between"
+              className="w-[400px] justify-between"
             >
-              {streetValue
-                ? streets.find((street) => street.value === streetValue)?.label
-                : "Street Name"}
+              {streetValue?.streetName || "Street Name"}
               <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0">
+          <PopoverContent className="w-[400px] p-0">
             <Command>
               <CommandInput
                 placeholder="Search street..."
@@ -155,8 +145,8 @@ function Address() {
                     <CommandItem
                       key={index}
                       value={`${street.streetName} - ${street.city}`}
-                      onSelect={(currentValue) => {
-                        setStreetValue(currentValue);
+                      onSelect={() => {
+                        setStreetValue(street);
                         setStreetSearchValue("");
                         setStreetOpen(false);
                       }}
@@ -164,8 +154,8 @@ function Address() {
                       <CheckIcon
                         className={cn(
                           "mr-2 h-4 w-4",
-                          streetValue ===
-                            `${street.streetName} - ${street.city}`
+                          streetValue?.streetName === street.streetName &&
+                            streetValue?.city === street.city
                             ? "opacity-100"
                             : "opacity-0"
                         )}
@@ -184,7 +174,7 @@ function Address() {
           </PopoverContent>
         </Popover>
 
-        {/* Get list of streets numbers from API */}
+        {/* Get list of streets numbers from API, only if street is selected, when clicking the button */}
         <Popover open={streetNumberOpen} onOpenChange={setStreetNumberOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -192,43 +182,53 @@ function Address() {
               role="combobox"
               aria-expanded={streetNumberOpen}
               className="w-[200px] justify-between"
+              disabled={!streetValue}
             >
-              {streetNumberValue
-                ? streetNumbers.find(
-                    (streetNumber) => streetNumber.value === streetNumberValue
-                  )?.label
-                : "Street Number"}
+              {streetNumberValue || "Street Number"}
               <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-0">
             <Command>
-              <CommandInput placeholder="Select street number..." />
+              <CommandInput
+                placeholder="Select street number..."
+                value={streetNumberValue}
+                onValueChange={setStreetNumberValue}
+              />
               <CommandList>
-                <CommandEmpty>No street numbers found.</CommandEmpty>
+                <CommandEmpty>
+                  {isLoadingStreetNumbers
+                    ? "Searching..."
+                    : "No street numbers found."}
+                </CommandEmpty>
                 <CommandGroup>
-                  {streetNumbers.map((streetNumber) => (
-                    <CommandItem
-                      key={streetNumber.value}
-                      value={streetNumber.value}
-                      onSelect={(currentValue) => {
-                        setStreetNumberValue(
-                          currentValue === streetNumberValue ? "" : currentValue
-                        );
-                        setStreetNumberOpen(false);
-                      }}
-                    >
-                      <CheckIcon
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          streetNumberValue === streetNumber.value
-                            ? "opacity-100"
-                            : "opacity-0"
-                        )}
-                      />
-                      {streetNumber.label}
-                    </CommandItem>
-                  ))}
+                  {streetNumberResults
+                    .filter(
+                      (streetNumber, index, self) =>
+                        index ===
+                        self.findIndex(
+                          (s) => s.streetNo === streetNumber.streetNo
+                        )
+                    )
+                    .sort((a, b) => Number(a.streetNo) - Number(b.streetNo))
+                    .map((streetNumber) => (
+                      <CommandItem
+                        key={streetNumber.addressId}
+                        value={streetNumber.addressId}
+                        onSelect={() => {
+                          setStreetNumberValue(
+                            streetNumber.entrance
+                              ? String(streetNumber.streetNo) +
+                                  " " +
+                                  streetNumber.entrance
+                              : String(streetNumber.streetNo)
+                          );
+                          setStreetNumberOpen(false);
+                        }}
+                      >
+                        {String(streetNumber.streetNo)} {streetNumber?.entrance}
+                      </CommandItem>
+                    ))}
                 </CommandGroup>
               </CommandList>
             </Command>
@@ -236,12 +236,25 @@ function Address() {
         </Popover>
 
         {/* Get list of cities from Street API */}
-        <Input placeholder="City" disabled value={streetValue?.city} />
-        <Input placeholder="Zip" disabled />
+        <Input placeholder="City" disabled value={streetValue?.city || ""} />
+
         {/* Get list of floors from API */}
-        <Input placeholder="Floor" />
+        <Input
+          placeholder="Floor"
+          className="w-50 bg-[repeating-linear-gradient(45deg,#808080,#808080_10px,transparent_10px,transparent_20px)]"
+          disabled
+        />
         {/* Get list of households on floor from API */}
-        <Input placeholder="Household" />
+        <Input
+          placeholder="Household"
+          className="w-50 bg-[repeating-linear-gradient(45deg,#808080,#808080_10px,transparent_10px,transparent_20px)]"
+          disabled
+        />
+        {streetValue && streetNumberValue && (
+          <div className="bg-green-300 text-green-900 p-2 rounded-full flex items-center justify-center flex flex-row gap-2">
+            <CheckIcon className="h-10 w-10" /> <span>Address is valid</span>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-row gap-2 w-auto mx-auto" hidden>
