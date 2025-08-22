@@ -23,22 +23,19 @@ Implement addresscheck UI where users can validate their address(es).
 
 
 ## stack
-- vite
-- react
-- typescript
+- vite / react / typescript
+- pnpm
 - redux
 - router
-- tailwindcss
-- shadcn/ui
-- pnpm
+- shadcn/ui tailwindcss
 
 
 ## requirements
-- correctness: 
-- documenation: commenting above function etc.
-- testing: 
-- readability:
-- application architecture: feature based
+- correctness: focus on basic functionality.
+- documenation: commenting above function etc. + readme
+- testing: workflow in github when pulling from stage to main -- wcag, lint, something api
+- readability: descriptive names for components, variables and functions 
+- application architecture: feature based setup, even though this is a small project
 
 
 ## questions
@@ -52,15 +49,27 @@ Implement addresscheck UI where users can validate their address(es).
 
 
 ## todo
+[] install vite + tailwindcss
 [] users should be able to fill in one or more addresses and validate these towards the API.
 [] Implement addresscheck UI where users can validate their address(es).
-[] store secret in env
+[] store secret in env (.env.template in 1Password for local dev)
 [] github repo and workflow (branches)
 [] postman
 [] build ui
 [] 
 
 
+## future todos
+[] improve or change components to wcag compliant ones
+
+
 ## time spent
 - approx. 30 minutes for planning before starting coding
-- 
+
+
+## requirements
+-  node v.20.12
+
+## installation
+- `pnpm i`
+- `pnpm run dev`, then visit http://localhost:5173
