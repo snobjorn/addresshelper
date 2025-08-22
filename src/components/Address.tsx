@@ -13,7 +13,12 @@ import {
   CommandGroup,
   CommandItem,
 } from "@/components/ui/command";
-import { CheckIcon } from "lucide-react";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import { CheckIcon, LoaderIcon } from "lucide-react";
 import { ChevronsUpDownIcon } from "lucide-react";
 import React from "react";
 import { cn } from "@/lib/utils";
@@ -44,6 +49,14 @@ interface StreetNumbersApiResponse {
   streetNumbers: StreetNumberResult[];
 }
 
+interface SavedAddress {
+  streetName?: string;
+  streetNumber?: string;
+  city?: string;
+}
+
+const initialSavedAddresses: SavedAddress[] = [];
+
 function Address() {
   // States for street search
   const [streetOpen, setStreetOpen] = React.useState(false);
@@ -60,8 +73,11 @@ function Address() {
   const [streetNumberResults, setStreetNumberResults] = React.useState<
     StreetNumberResult[]
   >([]);
-  const [isLoadingStreetNumbers, setIsLoadingStreetNumbers] =
-    React.useState(false);
+
+  // States for saved addresses
+  const [savedAddresses, setSavedAddresses] = React.useState<SavedAddress[]>(
+    initialSavedAddresses
+  );
 
   // Search function for streets
   const searchStreets = React.useCallback(async (searchTerm: string) => {
@@ -113,9 +129,54 @@ function Address() {
     }
   }, [streetValue, searchStreetNumbers]);
 
+  // Handle add address
+  const handleAddAddress = () => {
+    setSavedAddresses([
+      ...savedAddresses,
+      {
+        streetName: streetValue?.streetName,
+        streetNumber: streetNumberValue,
+        city: streetValue?.city,
+      },
+    ]);
+    setStreetValue(null);
+    setStreetNumberValue("");
+    setStreetSearchValue("");
+    setStreetOpen(false);
+    setStreetNumberOpen(false);
+  };
+
+  // Handle reset form
+  const handleResetForm = () => setSavedAddresses([]);
+
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-row gap-2 container mx-auto items-center">
+      {/* Saved addresses */}
+      {savedAddresses.length > 0 && (
+        <div className="flex flex-col gap-2">
+          {savedAddresses.map((address, index) => (
+            <div
+              className="flex flex-row gap-2 container mx-auto items-center rounded-md p-2 border-3 border-solid border-green-300"
+              key={index}
+            >
+              <div className="flex flex-row gap-2">
+                <p>{address.streetName}</p>
+                <p>{address.streetNumber}</p>
+                <p>{address.city}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Current address search */}
+      <div
+        className={`flex flex-row gap-2 container mx-auto items-center rounded-md p-2 border-3 ${
+          streetValue && streetNumberValue
+            ? "border-solid border-green-300"
+            : "border-dashed border-gray-300 "
+        }`}
+      >
         {/* Search for Street in API */}
         <Popover open={streetOpen} onOpenChange={setStreetOpen}>
           <PopoverTrigger asChild>
@@ -196,11 +257,7 @@ function Address() {
                 onValueChange={setStreetNumberValue}
               />
               <CommandList>
-                <CommandEmpty>
-                  {isLoadingStreetNumbers
-                    ? "Searching..."
-                    : "No street numbers found."}
-                </CommandEmpty>
+                <CommandEmpty>No street numbers found.</CommandEmpty>
                 <CommandGroup>
                   {streetNumberResults
                     .filter(
@@ -239,27 +296,59 @@ function Address() {
         <Input placeholder="City" disabled value={streetValue?.city || ""} />
 
         {/* Get list of floors from API */}
-        <Input
-          placeholder="Floor"
-          className="w-50 bg-[repeating-linear-gradient(45deg,#808080,#808080_10px,transparent_10px,transparent_20px)]"
-          disabled
-        />
+        <Tooltip>
+          <TooltipTrigger>
+            <Input
+              placeholder="Floor"
+              className="w-50 bg-[repeating-linear-gradient(45deg,#808080,#808080_10px,transparent_10px,transparent_20px)]"
+              disabled
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Floor is not available in this version of the app</p>
+          </TooltipContent>
+        </Tooltip>
+
         {/* Get list of households on floor from API */}
-        <Input
-          placeholder="Household"
-          className="w-50 bg-[repeating-linear-gradient(45deg,#808080,#808080_10px,transparent_10px,transparent_20px)]"
-          disabled
-        />
-        {streetValue && streetNumberValue && (
-          <div className="bg-green-300 text-green-900 p-2 rounded-full flex items-center justify-center flex flex-row gap-2">
-            <CheckIcon className="h-10 w-10" /> <span>Address is valid</span>
+        <Tooltip>
+          <TooltipTrigger>
+            <Input
+              placeholder="Household"
+              className="w-50 bg-[repeating-linear-gradient(45deg,#808080,#808080_10px,transparent_10px,transparent_20px)]"
+              disabled
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Household is not available in this version of the app</p>
+          </TooltipContent>
+        </Tooltip>
+
+        {streetValue && streetNumberValue ? (
+          <div className="bg-green-300 text-green-900 p-1 rounded-full">
+            <span className="sr-only">Address is valid</span>
+            <CheckIcon className="" />
+          </div>
+        ) : (
+          <div className=" text-gray-600 p-1 rounded-full ">
+            <span className="sr-only">Not validated</span>
+            <LoaderIcon className="animate-spin" />
           </div>
         )}
       </div>
 
-      <div className="flex flex-row gap-2 w-auto mx-auto" hidden>
-        <Button className="w-auto mx-auto">Add Another Address</Button>
-        <Button className="w-auto mx-auto" variant="destructive">
+      <div className="flex flex-row gap-2 w-auto mx-auto">
+        <Button
+          className="w-auto mx-auto"
+          onClick={handleAddAddress}
+          disabled={!streetValue || !streetNumberValue}
+        >
+          Check Another Address
+        </Button>
+        <Button
+          className="w-auto mx-auto"
+          variant="destructive"
+          onClick={handleResetForm}
+        >
           Reset Form
         </Button>
       </div>
