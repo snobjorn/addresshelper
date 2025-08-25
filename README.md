@@ -67,6 +67,7 @@ Implement addresscheck UI where users can validate their address(es).
 
 ## future todos
 
+- [ ] responsive layout (would have been in mind from the beginning if it were a "real" project)
 - [ ] update the commenting in the code from only "what" the code does to also include "why"
 - [ ] improve or change components to wcag compliant ones (shadcnui solves much of this already)
 - [ ] fix uppercase letters etc in addresses
