@@ -90,5 +90,5 @@ Implement addresscheck UI where users can validate their address(es).
 ## installation
 
 - `pnpm i`
-- add reference to secrets in `env.template` and run `pnpm run env` or create `.env.local` with variables `DI_APIKEY` and `DI_REFERER` -- see examples in file
+- add reference to secrets in `env.template` and run `pnpm run env` or create `.env.local` with variables `VITE_DI_API_KEY`, `VITE_DI_API_URL` and `VITE_DI_REFERER` -- see examples in file
 - `pnpm run dev`, then visit http://localhost:5173
