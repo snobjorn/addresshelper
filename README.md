@@ -4,21 +4,21 @@
 
 Implement addresscheck UI where users can validate their address(es).
 
-## tasks
+## main tasks
 
 1. list features
 2. create todo
-3. before task: ui - ok.
-4. after task:
+3. before task: seems ok. not clear on what ui and input should be.
+4. solve todos
+5. after task: would have planned more
 
-## features
+## main features
 
 - check
--
 
-## coding
+## thoughs on coding
 
-1. folders from features
+1. folder(s) from features
 2. folders: components, contexts, features, lib, services, types
 3. app provider for context in App
 
@@ -33,19 +33,18 @@ Implement addresscheck UI where users can validate their address(es).
 
 - correctness: focus on basic functionality
 - documenation: commenting above functions etc. + readme
-- testing: eslint, console and logging, workflow in github when pulling from stage to main -- wcag
+- testing: eslint, console and logging. would have: workflow in github when pulling from stage to main -- changes, wcag
 - readability: descriptive names for components, variables and functions
 - application architecture: feature based setup, even though this is a small project
 
 ## questions
 
 - vite: up and running fast
-- redux: not used before, interested in trying its approach to loader and action
 - pnpm: fast
 - ci/cd: code in feature branch, pr into stage (deploy to stage.example.com), pr into main (deploy to example.com)
 - translation/localization: not experience with this, but would have combined language switcher, placed strings in json files for each language.
 - tracking/analytics: not implemented in my solution. for simple public app -> event tagging with tracking script. for larger solutions behind login -> some back-end integration perhaps.
-- testing:
+- testing: would have set up vitest and test the api, have not done this
 
 ## todo
 
@@ -71,12 +70,13 @@ Implement addresscheck UI where users can validate their address(es).
 - [ ] update the commenting in the code from only "what" the code does to also include "why"
 - [ ] improve or change components to wcag compliant ones (shadcnui solves much of this already)
 - [ ] fix uppercase letters etc in addresses
-- [ ] show loading states with spinners
+- [ ] show loading states with spinners, consider useNavigation in React Router
 - [ ] create reusable components for fields in the form -- DRY
 - [ ] make scalable solution for street number with more numbers than 100
 - [ ] as of now I have simply hidden duplicate `streetNo` items -- find a better solution for items where `duplicateNumberAndEntrance` is `true`. so no floors and households will be missing from search/select
 - [ ] include zip number in result to better user experience
 - [ ] more testing in a github workflow
+- [ ] test api connection with vitest
 
 ## time spent
 
